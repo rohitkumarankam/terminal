@@ -184,6 +184,12 @@ var commands = {
     },
     description: 'opens website of the user.',
   },
+  exit:{
+    f:()=>{
+      window.close();
+    },
+    description: "close terminal."
+  },
 };
 
 function runCommand(term, text) {
