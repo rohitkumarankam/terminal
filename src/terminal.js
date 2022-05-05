@@ -1,9 +1,9 @@
-import {Terminal} from 'xterm'
+import { Terminal } from 'xterm'
 import 'xterm/css/xterm.css'
 import './terminal.css'
-import copy from 'copy-to-clipboard'
+import { copy } from 'copy-to-clipboard'
+import { FitAddon } from 'xterm-addon-fit'
 
-// vscode-snazzy https://github.com/Tyriar/vscode-snazzy
 var BaseTheme = {
   foreground: '#eff0eb',
   background: '#282a36',
@@ -31,28 +31,17 @@ var term = new Terminal({
   theme: BaseTheme,
   cursorBlink: true,
 });
-term.open(document.querySelector('#terminal'));
-var sizes = {
-  width: Math.floor(window.innerWidth*0.06*2),
-  height: Math.floor(window.innerHeight*0.0271*2),
-}
 
-if(window.innerWidth <= 768)
-{
-  sizes.width = Math.floor(window.innerWidth*0.086*2/window.devicePixelRatio);
-  sizes.height = Math.floor((window.innerHeight*0.04*2)/window.devicePixelRatio);
-  term.resize(sizes.width,sizes.height)
-}else
-{
-  sizes.width = Math.floor(window.innerWidth*0.06*2)
-  sizes.height = Math.floor(window.innerHeight*0.0271*2)
-  window.addEventListener('resize', ()=>{
-    sizes.width = Math.floor(window.innerWidth*0.06*2)
-    sizes.height = Math.floor(window.innerHeight*0.0271*2)
-    term.resize(sizes.width, sizes.height)
-  })
-  term.resize(sizes.width,sizes.height)
-}
+const fitaddon = new FitAddon();
+term.loadAddon(fitaddon)
+term.open(document.querySelector('#terminal'));
+
+fitaddon.fit()
+
+window.onresize = function () {
+  fitaddon.fit();
+};
+
 document.getElementsByClassName('xterm').onload = term.focus()
 
 var commandslist =[];
